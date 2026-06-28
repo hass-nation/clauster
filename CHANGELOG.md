@@ -336,6 +336,25 @@
 ### Build System & Dependencies
 
 * sync uv.lock with pyproject (drop logfire tree, add ruff + pyright) ([48abfcd](https://github.com/schubydoo/clauster/commit/48abfcdba851dee46ab5e367f98a3ea19f6af918))
+## 0.12.9 (2026-06-28)
+
+### Features
+
+- Confirm before cancelling an in-progress clone, and reattach a second tab to a live clone's progress instead of showing nothing ([#708](https://github.com/schubydoo/clauster/pull/708))
+- Make the application `log_format` editable in the in-app config editor and add a coverage guard that asserts every config field is a deliberate editable-or-excluded decision. ([#705](https://github.com/schubydoo/clauster/pull/705))
+- Add the fail-closed `config_write` trust-tier foundation (off-by-default capability + scope gate, type-the-name confirm, structural secret redaction, and a shared `~/.claude.json` lock+merge+atomic writer factored out of trust.py) ([#706](https://github.com/schubydoo/clauster/pull/706))
+- Add a `clauster mcp` read-only stdio MCP server exposing `list_sessions` and `session_status` tools that report Clauster's bridge, hosted, background-agent, and external sessions to any MCP client ([#710](https://github.com/schubydoo/clauster/pull/710))
+- Add an opt-in `CLAUSTER_PYTE_PATH` env var so a standalone-binary user can enable the read-only live terminal view by separately installing `pyte` and pointing it at that directory, without bundling LGPL code ([#702](https://github.com/schubydoo/clauster/pull/702))
+- Live-tail a running session's transcript in the read-only viewer: a new offset-based tail endpoint polls the `.jsonl` from the last byte position and appends redacted new turns as the agent works ([#709](https://github.com/schubydoo/clauster/pull/709))
+
+### Fixes
+
+- Drop `'unsafe-inline'` from the CSP `style-src` by nonce-gating the inline `<style>` blocks and lifting every inline `style=""` attribute into a CSS class (#533). ([#635](https://github.com/schubydoo/clauster/pull/635))
+- Fix a freshly-spawned bridge's auto-created session briefly reading as an EXTERNAL/unmanaged "phantom" row during the bridge's Starting window — reconcile now attributes a STARTING bridge's cwd, not only a live one (#713) ([#714](https://github.com/schubydoo/clauster/pull/714))
+- Hide a deprecated config-editor field once its key is removed from disk, and stop interactive `config reconcile` from offering to override an already-set replacement ([#703](https://github.com/schubydoo/clauster/pull/703))
+- Make the live-terminal "pyte unavailable" error honest on the standalone binary — pyte is LGPL and not bundled, so point binary users at a `pip`/`uv` install with the `[pty]` extra instead of the dead-end `install clauster[pty]`; documented in installation/configuration and the in-app editor help ([#700](https://github.com/schubydoo/clauster/pull/700))
+- Swap structural Unicode emoji (warnings, carets, refresh, pause, back arrow, check/x) in the dashboard for consistent inline Tabler symbol icons ([#704](https://github.com/schubydoo/clauster/pull/704))
+
 ## 0.12.8 (2026-06-28)
 
 ### Features
